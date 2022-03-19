@@ -149,3 +149,66 @@ If a synchronization primitive doesn't allow reacquisition of itself by a thread
 then such a thread would block as soon as it attempts to reacquire the primitive a second time.
 
 -----------------------------------------------------------------------------------------------------------------------------
+
+Mutex#
+Mutex as the name hints implies mutual exclusion. A mutex is used to guard shared data such as a linked-list, 
+an array or any primitive type. A mutex allows only a single thread to access a resource or critical section.
+
+Once a thread acquires a mutex, all other threads attempting to acquire the same mutex are blocked until the 
+first thread releases the mutex. Once released, most implementations arbitrarily chose one of the waiting 
+threads to acquire the mutex and make progress.
+
+Semaphore#
+Semaphore, on the other hand, is used for limiting access to a collection of resources. Think of semaphore 
+s having a limited number of permits to give out. If a semaphore has given out all the permits it has, then 
+any new thread that comes along requesting for a permit will be blocked, till an earlier thread with a permit 
+returns it to the semaphore. A typical example would be a pool of database connections that can be handed out 
+to requesting threads. Say there are ten available connections but 50 requesting threads. In such a scenario, 
+a semaphore can only give out ten permits or connections at any given point in time.
+
+A semaphore with a single permit is called a binary semaphore and is often thought of as an equivalent of a 
+mutex, which isn't completely correct as we'll shortly explain. Semaphores can also be used for signaling 
+among threads. This is an important distinction as it allows threads to cooperatively work towards completing 
+a task. A mutex, on the other hand, is strictly limited to serializing access to shared state among competing 
+threads.
+
+-------------------------------------------------------------------------------------------------------------------
+
+Difference between Mutex and Semaphore#
+
+Mutex implies mutual exclusion and is used to serialize access to critical sections whereas semaphore can 
+potentially be used as a mutex but it can also be used for cooperation and signaling amongst threads. 
+Semaphore also solves the issue of missed signals.
+
+Mutex is owned by a thread, whereas a semaphore has no concept of ownership.
+
+Mutex if locked, must necessarily be unlocked by the same thread. A semaphore can be acted upon by different 
+threads. This is true even if the semaphore has a permit of one
+
+Think of semaphore analogous to a car rental service such as Hertz. Each outlet has a certain number of cars, 
+it can rent out to customers. It can rent several cars to several customers at the same time but if all the 
+cars are rented out then any new customers need to be put on a waitlist till one of the rented cars is returned. 
+In contrast, think of a mutex like a lone runway on a remote airport. Only a single jet can land or take-off 
+from the runway at a given point in time. No other jet can use the runway simultaneously with the first aircraft.
+
+-----------------------------------------------------------------------------------------------------------------------
+
+Java’s Monitor#
+In Java every object is a condition variable and has an associated lock that is hidden from the developer. 
+Each java object exposes wait() and notify() methods.
+
+Before we execute wait() on a java object we need to lock its hidden mutex. That is done implicitly through 
+the synchronized keyword. If you attempt to call wait() or notify() outside of a synchronized block, an 
+IllegalMonitorStateException would occur. It's Java reminding the developer that the mutex wasn't acquired 
+before wait on the condition variable was invoked. wait() and notify() can only be called on an object once 
+the calling thread becomes the owner of the monitor. The ownership of the monitor can be achieved in the 
+following ways:
+
+1) the method the thread is executing has synchronized in its signature
+
+2) the thread is executing a block that is synchronized on the object on which wait or notify will be called
+
+3) in case of a class, the thread is executing a static method which is synchronized.
+
+----------------------------------------------------------------------------------------------------------------------
+
