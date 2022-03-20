@@ -212,3 +212,100 @@ following ways:
 
 ----------------------------------------------------------------------------------------------------------------------
 
+Thread Safe#
+A class and its public APIs are labelled as thread safe if multiple threads can consume the exposed APIs without 
+causing race conditions or state corruption for the class. Note that composition of two or more thread-safe classes 
+doesn't guarantee the resulting type to be thread-safe.
+
+Synchronized#
+Java’s most fundamental construct for thread synchronization is the synchronized keyword. It can be used to 
+restrict access to critical sections one thread at a time.
+
+Each object in Java has an entity associated with it called the "monitor lock" or just monitor. Think of it as an 
+exclusive lock. Once a thread gets hold of the monitor of an object, it has exclusive access to all the methods 
+marked as synchronized. No other thread will be allowed to invoke a method on the object that is marked as 
+synchronized and will block, till the first thread releases the monitor which is equivalent of the first 
+thread exiting the synchronized method.
+
+Note carefully:
+
+For static methods, the monitor will be the class object, which is distinct from the monitor of each instance 
+of the same class.
+
+If an uncaught exception occurs in a synchronized method, the monitor is still released.
+
+Furthermore, synchronized blocks can be re-entered.
+
+-----------------------------------------------------------------------------------------------------------------------------
+
+Monitor
+
+Usually, the implementation of monitors is faster/light-weight, since it is designed for multi-threaded synchronization 
+within the same process. Also, usually, it is provided by a framework/library itself (as opposed to requesting the OS).
+
+Mutex
+
+Usually, mutexes are provided by the OS kernel and libraries/frameworks simply provide an interface to invoke it. This 
+makes them heavy-weight/slower, but they work across threads on different processes. OS might also provide features to 
+access the mutex by name for easy sharing between instances of separate executables (as opposed to using a handle that 
+can be used by fork only).
+
+-----------------------------------------------------------------------------------------------------------------------------
+
+wait()#
+The wait method is exposed on each java object. Each Java object can act as a condition variable. When a thread executes 
+the wait method, it releases the monitor for the object and is placed in the wait queue. Note that the thread must be 
+inside a synchronized block of code that synchronizes on the same object as the one on which wait() is being called, or 
+in other words, the thread must hold the monitor of the object on which it'll call wait. If not so, an illegalMonitor 
+exception is raised!
+
+notify()#
+Like the wait method, notify() can only be called by the thread which owns the monitor for the object on which notify() 
+is being called else an illegal monitor exception is thrown. The notify method, will awaken one of the threads in the 
+associated wait queue, i.e., waiting on the thread's monitor.
+
+However, this thread will not be scheduled for execution immediately and will compete with other active threads that 
+are trying to synchronize on the same object. The thread which executed notify will also need to give up the object's 
+monitor, before any one of the competing threads can acquire the monitor and proceed forward.
+
+notifyAll()#
+This method is the same as the notify() one except that it wakes up all the threads that are waiting on the object's 
+monitor
+
+------------------------------------------------------------------------------------------------------------------------------
+
+Interrupted Exception#
+You'll often come across this exception being thrown from functions. When a thread wait()-s or sleep()-s then one way for 
+it to give up waiting/sleeping is to be interrupted. If a thread is interrupted while waiting/sleeping, it'll wake up and 
+immediately throw Interrupted exception.
+
+The thread class exposes the interrupt() method which can be used to interrupt a thread that is blocked in a sleep() 
+or wait() call. Note that invoking the interrupt method only sets a flag that is polled periodically by sleep or wait 
+to know the current thread has been interrupted and an interrupted exception should be thrown.
+
+-------------------------------------------------------------------------------------------------------------------------------
+
+Volatile keyword#
+
+The volatile concept is specific to Java. Its easier to understand volatile, if you understand the problem it solves.
+
+If you have a variable say a counter that is being worked on by a thread, it is possible the thread keeps a copy of 
+the counter variable in the CPU cache and manipulates it rather than writing to the main memory. The JVM will decide 
+when to update the main memory with the value of the counter, even though other threads may read the value of the 
+counter from the main memory and may end up reading a stale value.
+
+If a variable is declared volatile then whenever a thread writes or reads to the volatile variable, the read and 
+write always happen in the main memory. As a further guarantee, all the variables that are visible to the writing 
+thread also get written-out to the main memory alongside the volatile variable. Similarly, all the variables visible 
+to the reading thread alongside the volatile variable will have the latest values visible to the reading thread.
+
+------------------------------------------------------------------------------------------------------------------------------
+
+When is volatile thread-safe#
+Volatile comes into play because of multiples levels of memory in hardware architecture required for performance 
+enhancements. If there's a single thread that writes to the volatile variable and other threads only read the volatile 
+variable then just using volatile is enough, however, if there's a possibility of multiple threads writing to the volatile 
+variable then "synchronized" would be required to ensure atomic writes to the variable.
+
+-------------------------------------------------------------------------------------------------------------------------------
+
