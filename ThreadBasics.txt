@@ -1,16 +1,19 @@
 Program#
+
 A program is a set of instructions and associated data that resides on the disk and is loaded by the operating system to 
 perform some task. An executable file or a python script file are examples of programs. In order to run a program, 
 the operating system's kernel is first asked to create a new process, which is an environment in which a program executes.
 
 
 Process#
+
 A process is a program in execution. A process is an execution environment that consists of instructions, user-data, 
 and system-data segments, as well as lots of other resources such as CPU, memory, address-space, disk and network I/O 
 acquired at runtime. A program can have several copies of it running at the same time but a process necessarily belongs 
 to only one program.
 
 Thread#
+
 Thread is the smallest unit of execution in a process. A thread simply executes instructions serially. A process can 
 have multiple threads running as part of it. Usually, there would be some state associated with the process that is 
 shared among all the threads and in turn each thread would have some state private to itself. The globally shared 
@@ -22,6 +25,7 @@ detail in upcoming lessons.
 ------------------------------------------------------------------------------------------------------------------------------
 
 Concurrency vs Parallelism#
+
 From the above discussion it should be apparent that a concurrent system need not be parallel, whereas a parallel system 
 is indeed concurrent. Additionally, a system can be both concurrent and parallel e.g. a multitasking operating system 
 running on a multicore machine.
@@ -37,6 +41,7 @@ coffee machine, while parallelism is similar to serving each customer queue with
 -----------------------------------------------------------------------------------------------------------------------------
 
 Preemptive Multitasking# (Core Feature of all Unix Based Systems)
+
 In preemptive multitasking, the operating system preempts a program to allow another waiting task to run on the CPU. 
 Programs or threads can't decide how long for or when they can use the CPU. The operating system’s scheduler decides 
 which thread or program gets to use the CPU next and for how much time. Furthermore, scheduling of programs or threads 
@@ -46,6 +51,7 @@ without affecting other programs or threads. Lastly, the programmer isn't burden
 back to the CPU in code.
 
 Cooperative Multitasking#
+
 Cooperative Multitasking involves well-behaved programs to voluntarily give up control back to the scheduler so that 
 another program can run. A program or thread may give up control after a period of time has expired or if it becomes 
 idle or logically blocked. The operating system’s scheduler has no say in how long a program or thread runs for. 
@@ -57,12 +63,14 @@ make the scheduling scheme work.
 ----------------------------------------------------------------------------------------------------------------------------
 
 Synchronous#
+
 Synchronous execution refers to line-by-line execution of code. If a function is invoked, the program execution 
 waits until the function call is completed. Synchronous execution blocks at each method call before proceeding to 
 the next line of code. A program executes in the same sequence as the code in the source code file. Synchronous 
 execution is synonymous to serial execution.
 
 Asynchronous#
+
 Asynchronous (or async) execution refers to execution that doesn't block when invoking subroutines. Or if you 
 prefer the more fancy Wikipedia definition: Asynchronous programming is a means of parallel programming in which 
 a unit of work runs separately from the main application thread and notifies the calling thread of its completion, 
@@ -80,11 +88,13 @@ Disk Storage
 ----------------------------------------------------------------------------------------------------------------------------
 
 CPU Bound#
+
 Programs which are compute-intensive i.e. program execution requires very high utilization of the CPU (close to 100%) 
 are called CPU bound programs. Such programs primarily depend on improving CPU speed to decrease program completion 
 time. This could include programs such as data crunching, image processing, matrix multiplication etc.
 
 I/O Bound#
+
 I/O bound programs are the opposite of CPU bound programs. Such programs spend most of their time waiting for input 
 or output operations to complete while the CPU sits idle. I/O operations can consist of operations that write or 
 read from main memory or network interfaces. Because the CPU and main memory are physically separate a data bus 
@@ -96,10 +106,12 @@ than CPU bound programs.
 ----------------------------------------------------------------------------------------------------------------------------
 
 Throughput#
+
 Throughput is defined as the rate of doing work or how much work gets done per unit of time. If you are an Instagram user, 
 you could define throughput as the number of images your phone or browser downloads per unit of time.
 
 Latency#
+
 Latency is defined as the time required to complete a task or produce a result. Latency is also referred to as response 
 time. The time it takes for a web browser to download Instagram images from the internet is the latency for downloading 
 the images.
@@ -107,10 +119,12 @@ the images.
 ---------------------------------------------------------------------------------------------------------------------------
 
 Critical Section#
+
 Critical section is any piece of code that has the possibility of being executed concurrently by more than one thread 
 of the application and exposes any shared data or resources used by the application for access.
 
 Race Condition#
+
 Race conditions happen when threads run through critical sections without thread synchronization. The threads 
 "race" through the critical section to write or read shared resources and depending on the order in which threads 
 finish the "race", the program output changes. In a race condition, threads access shared resources or program 
@@ -123,14 +137,17 @@ can lead to a host of subtle and hard to find bugs and side-effects. Some of the
 names and are discussed below.
 
 DeadLock#
+
 Deadlocks occur when two or more threads aren't able to make any progress because the resource required by the first 
 thread is held by the second and the resource required by the second thread is held by the first.
 
 Liveness#
+
 Ability of a program or an application to execute in a timely manner is called liveness. If a program experiences a 
 deadlock then it's not exhibiting liveness.
 
 Live-Lock#
+
 A live-lock occurs when two threads continuously react in response to the actions by the other thread without making 
 any real progress. The best analogy is to think of two persons trying to cross each other in a hallway. John moves to 
 the left to let Arun pass, and Arun moves to his right to let John pass. Both block each other now. John sees he's 
@@ -139,11 +156,13 @@ each other and keep blocking each other. This scenario is an example of a livelo
 and not deadlocked but in reality, isn't making any progress.
 
 Starvation#
+
 Other than a deadlock, an application thread can also experience starvation, when it never gets CPU time or access 
 to shared resources. Other greedy threads continuously hog shared system resources not letting the starving thread 
 make any progress.
 
 Reentrant Lock#
+
 Re-entrant locks allow for re-locking or re-entering of a synchronization lock. 
 If a synchronization primitive doesn't allow reacquisition of itself by a thread that has already acquired it, 
 then such a thread would block as soon as it attempts to reacquire the primitive a second time.
@@ -151,6 +170,7 @@ then such a thread would block as soon as it attempts to reacquire the primitive
 -----------------------------------------------------------------------------------------------------------------------------
 
 Mutex#
+
 Mutex as the name hints implies mutual exclusion. A mutex is used to guard shared data such as a linked-list, 
 an array or any primitive type. A mutex allows only a single thread to access a resource or critical section.
 
@@ -159,6 +179,7 @@ first thread releases the mutex. Once released, most implementations arbitrarily
 threads to acquire the mutex and make progress.
 
 Semaphore#
+
 Semaphore, on the other hand, is used for limiting access to a collection of resources. Think of semaphore 
 s having a limited number of permits to give out. If a semaphore has given out all the permits it has, then 
 any new thread that comes along requesting for a permit will be blocked, till an earlier thread with a permit 
@@ -194,6 +215,7 @@ from the runway at a given point in time. No other jet can use the runway simult
 -----------------------------------------------------------------------------------------------------------------------
 
 Java’s Monitor#
+
 In Java every object is a condition variable and has an associated lock that is hidden from the developer. 
 Each java object exposes wait() and notify() methods.
 
@@ -213,11 +235,13 @@ following ways:
 ----------------------------------------------------------------------------------------------------------------------
 
 Thread Safe#
+
 A class and its public APIs are labelled as thread safe if multiple threads can consume the exposed APIs without 
 causing race conditions or state corruption for the class. Note that composition of two or more thread-safe classes 
 doesn't guarantee the resulting type to be thread-safe.
 
 Synchronized#
+
 Java’s most fundamental construct for thread synchronization is the synchronized keyword. It can be used to 
 restrict access to critical sections one thread at a time.
 
@@ -253,6 +277,7 @@ can be used by fork only).
 -----------------------------------------------------------------------------------------------------------------------------
 
 wait()#
+
 The wait method is exposed on each java object. Each Java object can act as a condition variable. When a thread executes 
 the wait method, it releases the monitor for the object and is placed in the wait queue. Note that the thread must be 
 inside a synchronized block of code that synchronizes on the same object as the one on which wait() is being called, or 
@@ -260,6 +285,7 @@ in other words, the thread must hold the monitor of the object on which it'll ca
 exception is raised!
 
 notify()#
+
 Like the wait method, notify() can only be called by the thread which owns the monitor for the object on which notify() 
 is being called else an illegal monitor exception is thrown. The notify method, will awaken one of the threads in the 
 associated wait queue, i.e., waiting on the thread's monitor.
@@ -269,12 +295,14 @@ are trying to synchronize on the same object. The thread which executed notify w
 monitor, before any one of the competing threads can acquire the monitor and proceed forward.
 
 notifyAll()#
+
 This method is the same as the notify() one except that it wakes up all the threads that are waiting on the object's 
 monitor
 
 ------------------------------------------------------------------------------------------------------------------------------
 
 Interrupted Exception#
+
 You'll often come across this exception being thrown from functions. When a thread wait()-s or sleep()-s then one way for 
 it to give up waiting/sleeping is to be interrupted. If a thread is interrupted while waiting/sleeping, it'll wake up and 
 immediately throw Interrupted exception.
@@ -302,6 +330,7 @@ to the reading thread alongside the volatile variable will have the latest value
 ------------------------------------------------------------------------------------------------------------------------------
 
 When is volatile thread-safe#
+
 Volatile comes into play because of multiples levels of memory in hardware architecture required for performance 
 enhancements. If there's a single thread that writes to the volatile variable and other threads only read the volatile 
 variable then just using volatile is enough, however, if there's a possibility of multiple threads writing to the volatile 
@@ -310,6 +339,7 @@ variable then "synchronized" would be required to ensure atomic writes to the va
 -------------------------------------------------------------------------------------------------------------------------------
 
 What is thread and daemon thread?
+
 Image result for what is a daemon thread
 Daemon threads are low priority threads which always run in background and user threads are high priority threads 
 which always run in foreground. User Thread or Non-Daemon are designed to do specific or complex task where as daemon 
@@ -339,23 +369,27 @@ then the child is also a non-daemon.
 ---------------------------------------------------------------------------------------------------------------------------------
 
 Task#
+
 A task is a logical unit of work. Usually, a task should be independent of other tasks so that it can be completed by a 
 single thread. A task can be represented by an object of a class implementing the Runnable interface. We can consider 
 HTTP requests being fielded by a web-server as tasks that need to be processed. A database server handling client queries 
 can similarly be thought of as independent tasks.
 
 Executor Framework#
+
 In Java, the primary abstraction for executing logical tasks units is the Executor framework and not the Thread class. 
 The classes in the Executor framework separate out:
 
 Task Submission
-Task Execution
+Task execution
+
 The framework allows us to specify different policies for task execution. Java offers three interfaces, which classes 
 can implement to manage thread lifecycle. These are:
 
-Executor Interface
-ExecutorService
-ScheduledExecutorService
+- Executor Interface
+- ExecutorService
+- ScheduledExecutorService
+
 The Executor interface forms the basis for the asynchronous task execution framework in Java.
 
 You don't need to create your own executor class as Java's java.util.concurrent package offers several types of 
@@ -364,3 +398,93 @@ the Executor Interface.
 
 ----------------------------------------------------------------------------------------------------------------------------------
 
+ThreadPool?
+
+A thread pool consists of homogenous worker threads that are assigned to execute tasks. Once a worker thread finishes a 
+task, it is returned to the pool. Usually, thread pools are bound to a queue from which tasks are dequeued for execution 
+by worker threads.
+
+- A thread pool can be tuned for the size of the threads it holds. A thread pool may also replace a thread if it dies 
+of an unexpected exception. Using a thread pool immediately alleviates from the ails of manual creation of threads.
+
+- There's no latency when a request is received and processed by a thread because no time is lost in creating a thread.
+
+- The system will not go out of memory because threads are not created without any limits
+
+- Fine tuning the thread pool will allow us to control the throughput of the system. We can have enough threads to keep 
+all processors busy but not so many as to overwhelm the system.
+
+- The application will degrade gracefully if the system is under load.
+
+---------------------------------------------------------------------------------------------------------------------------------
+
+Types of ThreadPools?
+
+Java has preconfigured thread pool implementations that can be instantiated using the factory methods of the Executors class. 
+The important ones are listed below:
+
+newFixedThreadPool: This type of pool has a fixed number of threads and any number of tasks can be submitted for execution. 
+                    Once a thead finishes a task, it can reused to execute another task from the queue.
+
+newSingleThreadExecutor: This executor uses a single worker thread to take tasks off of queue and execute them. If the thread 
+                         dies unexpectedly, then the executor will replace it with a new one.
+
+newCachedThreadPool: This pool will create new threads as required and use older ones when they become available. However, 
+                     it'll terminate threads that remain idle for a certain configurable period of time to conserve memory. 
+                     This pool can be a good choice for short-lived asynchronous tasks.
+
+newScheduledThreadPool: This pool can be used to execute tasks periodically or after a delay.
+
+There is also another kind of pool which we'll only mention in passing as it's not widely used: ForkJoinPool. A prefconfigured 
+version of it can be instantiated using the factory method Executors.newWorkStealingPool(). These pools are used for tasks which 
+fork into smaller subtasks and then join results once the subtasks are finished to give an uber result. It's essentially the 
+divide and conquer paradigm applied to tasks.
+
+----------------------------------------------------------------------------------------------------------------------------------------
+
+Executor Lifecycle#
+
+An executor has the following stages in its lify-cycle:
+
+- Running
+- Shutting Down
+- Terminated
+
+As mentioned earlier, JVM can't exit unless all non-daemon thread have terminated. Executors can be made to shutdown either 
+abruptly or gracefully. When doing the former, the executor attempts to cancel all tasks in progress and doesn't work on any 
+enqueued ones, whereas when doing the latter, the executor gives a chance for tasks already in execution to complete but also 
+completes the enqueued tasks. If shutdown is initiated then the executor will refuse to accept new tasks and if any are submitted,
+they can be handled by providing a RejectedExecutionHandler.
+
+----------------------------------------------------------------------------------------------------------------------------------------
+
+Callable Interface#
+
+In the previous sections we used the Runnable interface as the abstraction for tasks that were submitted to the executor service. 
+The Runnable interface's sole run method doesn't return a value, which is a handicap for tasks that don't want to write results 
+to global or shared datastructures. The interface Callable allows such tasks to return results. Let's see the definition of the 
+interface first.
+
+public interface Callable<V> {
+    /**
+     * Computes a result, or throws an exception if unable to do so.
+     *
+     * @return computed result
+     * @throws Exception if unable to compute a result
+     */
+    V call() throws Exception;
+}
+Note the interface also allows a task to throw an exception. A task goes through the various stages of its life which include the 
+following:
+
+- created
+- submitted
+- started
+- completed
+
+----------------------------------------------------------------------------------------------------------------------------------------
+
+Future Interface#
+
+The Future interface is used to represent the result of an asynchronous computation. The interface also provides methods to 
+check the status of a submitted task and also allows the task to be cancelled if possible.
